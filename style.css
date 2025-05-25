@@ -177,3 +177,15 @@ input[type=range]::-moz-range-thumb {
   border-radius: 50%;
   border: 1px solid #ddd;
 }
+
+.cursor-glow {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    pointer-events: none; /* Чтобы не мешал кликам */
+    transform: translate(-50%, -50%); /* Центрирует элемент относительно курсора */
+    z-index: 9999; /* Чтобы был поверх других элементов */
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2);
+}
