@@ -1,11 +1,57 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Тест Cloudflare Tunnel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grab1s</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <h1>Привет, мир!</h1>
-  <p>Это простая HTML-страница, доступная через Cloudflare Tunnel.</p>
+    <video autoplay muted loop id="background-video">
+        <!-- Оставь <source> пустым, если пока нет видео, или удали тег <video> если не нужен -->
+        <!-- <source src="path/to/your/video.mp4" type="video/mp4"> -->
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header>
+            <img src="https://via.placeholder.com/150" alt="Avatar" class="avatar">
+            <h1 id="username">grab1s</h1>
+            <p id="bio">Добро пожаловать на мой сайт! Здесь вы найдете ссылки на мои проекты и социальные сети.</p>
+        </header>
+
+        <main class="links">
+            <a href="#" target="_blank" class="link-button">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="#" target="_blank" class="link-button">
+                <i class="fab fa-telegram-plane"></i> Telegram
+            </a>
+            <a href="#" target="_blank" class="link-button">
+                <i class="fas fa-envelope"></i> Email
+            </a>
+            <a href="#" target="_blank" class="link-button">
+                <i class="fab fa-youtube"></i> YouTube
+            </a>
+        </main>
+
+        <footer>
+            <div class="music-player">
+                <audio id="background-music" loop>
+                    <!-- Оставь <source> пустым, если пока нет музыки, или удали тег <audio> если не нужен -->
+                    <!-- <source src="path/to/your/music.mp3" type="audio/mpeg"> -->
+                    Your browser does not support the audio element.
+                </audio>
+                <button id="play-pause-button"><i class="fas fa-play"></i></button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+            </div>
+            <p>© 2024 grab1s. Все права защищены.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
