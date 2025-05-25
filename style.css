@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Roboto Mono', monospace;
+    color: #fff;
+    overflow: hidden; /* Предотвращает прокрутку из-за видеофона */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -2;
+    object-fit: cover; /* Покрывает всю область, обрезая лишнее */
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Затемняющий слой поверх видео */
+    z-index: -1;
+}
+
+.container {
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    z-index: 1;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.1);
+}
+
+#username {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    /* Будет анимирован JS */
+}
+
+#bio {
+    font-size: 1em;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.link-button {
+    background-color: rgba(50, 50, 50, 0.8);
+    color: #fff;
+    padding: 15px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.link-button:hover {
+    background-color: rgba(80, 80, 80, 0.9);
+    transform: translateY(-3px);
+}
+
+.link-button i {
+    font-size: 1.2em;
+}
+
+footer {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+.music-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.music-player button {
+    background: none;
+    border: 1px solid #aaa;
+    color: #aaa;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.music-player button:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+#volume-slider {
+    width: 100px;
+    cursor: pointer;
+}
+
+/* Стили для ползунка громкости (могут отличаться в разных браузерах) */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  height: 5px;
+  background: #555;
+  border-radius: 3px;
+}
+
+input[type=range]::-moz-range-track {
+  height: 5px;
+  background: #555;
+  border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px; /* Половина высоты ползунка минус половина высоты дорожки */
+  background-color: #fff;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
+
+input[type=range]::-moz-range-thumb {
+  background-color: #fff;
+  height: 13px;
+  width: 13px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
