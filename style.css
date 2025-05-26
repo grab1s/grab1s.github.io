@@ -63,10 +63,13 @@ body {
     position: fixed;
     right: 0;
     bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
+    min-width: 100%;  
+    min-height: 100%; 
+    width: auto;      
+    height: auto;     
     z-index: 1; 
-    object-fit: cover;
+    object-fit: cover; 
+    object-position: center center;
 }
 
 .overlay {
@@ -132,9 +135,9 @@ body {
     backdrop-filter: blur(0px); 
     -webkit-backdrop-filter: blur(0px);
     animation: fadeInElementWithBlur 1.5s ease-in-out 0.4s forwards; 
-    display: flex; /* Добавлено для управления дочерними элементами */
-    flex-direction: column; /* Дочерние элементы будут в столбик */
-    align-items: center; /* Центрируем дочерние элементы по горизонтали */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
 } 
 
 footer { 
@@ -180,19 +183,19 @@ footer > p {
 .music-player .track-info { 
     font-size: 1em;
     color: #e0e0e0;
-    margin-bottom: 8px; /* Отступ под названием трека */
+    margin-bottom: 8px; 
     min-height: 1.2em;
     font-weight: bold;
-    text-align: center; /* Убедимся, что текст названия центрирован */
-    width: 100%; /* Чтобы занимал всю ширину и text-align сработал */
+    text-align: center; 
+    width: 100%; 
 }
 .music-player .controls { 
     display: flex;
     align-items: center;
-    justify-content: center; /* Центрируем кнопки управления */
+    justify-content: center; 
     gap: 20px;
-    width: 100%; /* Занимает всю ширину для центрирования */
-    margin-bottom: 8px; /* Отступ под кнопками */
+    width: 100%; 
+    margin-bottom: 8px; 
 }
 .music-player button { background: none; border: 1px solid #999; color: #999; padding: 0; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; transition: color 0.25s, border-color 0.25s, background-color 0.25s, transform 0.2s; }
 .music-player button:hover { color: #fff; border-color: #fff; background-color: rgba(255,255,255,0.1); }
@@ -201,10 +204,10 @@ footer > p {
 .music-player .progress-container { 
     display: flex;
     align-items: center;
-    width: 90%; /* Оставляем немного места по бокам */
-    max-width: 400px; /* Можно увеличить, если нужно шире */
+    width: 90%; 
+    max-width: 400px; 
     gap: 10px;
-    margin: 8px auto; /* auto для горизонтального центрирования */
+    margin: 8px auto; 
     font-size: 0.85em;
 }
 #seek-slider { flex-grow: 1; height: 8px; }
@@ -212,11 +215,11 @@ footer > p {
 .music-player .volume-control { 
     display: flex;
     align-items: center;
-    justify-content: center; /* Центрируем элементы управления громкостью */
+    justify-content: center; 
     gap: 10px;
-    width: 80%; /* Можно сделать чуть шире */
-    max-width: 280px; /* Ограничиваем */
-    margin: 0 auto; /* Горизонтальное центрирование */
+    width: 80%; 
+    max-width: 280px;
+    margin: 0 auto; 
 }
 .music-player .volume-control i { font-size: 0.9em; }
 #volume-slider { width: 100px; height: 8px; }
@@ -237,5 +240,5 @@ input[type=range]:hover::-moz-range-thumb { background-color: #fff; transform: s
     #username { font-size: 2.2em; }
     .avatar { width: 100px; height: 100px; }
     .link-button { padding: 15px 20px; font-size: 1.1em; max-width: 100%; }
-    .music-player .progress-container, .music-player .volume-control { width: 100%; max-width: none; /* Убираем max-width на мобильных, чтобы занимали всю ширину */ }
+    .music-player .progress-container, .music-player .volume-control { width: 100%; max-width: none; }
 }
