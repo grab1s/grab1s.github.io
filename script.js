@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const mobileVideoSrc = 'video/1.mp4';   
     const desktopVideoFiles = [];
-    for (let i = 2; i <= 9; i++) {
+    for (let i = 2; i <= 12; i++) {
         desktopVideoFiles.push(`video/${i}.mp4`);
     }
 
