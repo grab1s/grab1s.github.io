@@ -4,34 +4,49 @@ body, html {
     margin: 0;
     padding: 0;
     width: 100%;
-    min-height: 100%; /* Для возможности скролла контента */
+    min-height: 100%; 
     font-family: 'Roboto Mono', monospace;
     color: #fff;
-    /* overflow: hidden;  Убрали, чтобы разрешить скролл */
-    background-color: #121212; /* Фоновый цвет, если видео не загрузится */
-    cursor: none; /* Убираем обычный курсор */
+    background-color: #121212; 
+    cursor: none !important; 
+    overflow-x: hidden; 
+}
+
+a, 
+button, 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"],
+input[type="range"],
+[role="button"],
+.link-button, 
+#play-pause-button,
+#prev-track-button,
+#next-track-button {
+    cursor: none !important;
 }
 
 body {
-    display: flex; /* Для центрирования контейнера, если он меньше высоты экрана */
+    display: flex; 
     justify-content: center;
-    align-items: flex-start; /* Контейнер будет сверху, если контента мало */
-    padding-top: 5vh; /* Отступ сверху для контейнера */
-    padding-bottom: 5vh; /* Отступ снизу */
+    align-items: center; 
+    padding: 5vh 0; 
+    box-sizing: border-box; 
+    min-height: 100vh; 
 }
 
 #cursor-glow {
     position: fixed;
-    width: 28px; /* Немного увеличим */
+    width: 28px; 
     height: 30px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.123);
     box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.116);
-    pointer-events: none;
-    transform: translate(-50%, -50%) scale(0); /* Начинаем со scale(0) для появления */
+    pointer-events: none; 
+    transform: translate(-50%, -50%) scale(0); 
     z-index: 9999;
     opacity: 0;
-    transition: transform 0.2s ease-out, opacity 0.3s ease-out; /* Плавное появление/исчезновение */
+    transition: transform 0.2s ease-out, opacity 0.3s ease-out; 
 }
 
 #cursor-glow.visible {
@@ -39,11 +54,10 @@ body {
     opacity: 1;
 }
 
-#cursor-glow.touch-active { /* Для активного касания можно сделать его чуть больше или ярче */
+#cursor-glow.touch-active { 
     transform: translate(-50%, -50%) scale(1.2);
     background-color: rgba(255, 255, 255, 0.144);
 }
-
 
 #background-video {
     position: fixed;
@@ -51,7 +65,7 @@ body {
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
-    z-index: -2;
+    z-index: 1; 
     object-fit: cover;
 }
 
@@ -61,362 +75,167 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.75); /* Чуть темнее */
-    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.65); 
+    z-index: 2; 
 }
 
 .container {
-    padding: 30px; /* Немного увеличим отступы */
-    border-radius: 12px;
     max-width: 650px;
     width: 90%;
-    z-index: 1;
-    animation: fadeIn 1.5s ease-in-out;
-    text-align: center; /* Все по центру */
-    margin: auto; /* Для корректной работы с flex в body */
+    z-index: 3; 
+    text-align: center; 
+    margin: auto; 
+    position: relative; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
 }
 
-@keyframes fadeIn {
+@keyframes fadeInContainer { 
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.avatar {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    border: 4px solid #fff;
-    margin-bottom: 25px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.527);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    object-fit: cover;
+@keyframes fadeInElementWithBlur { 
+    from { opacity: 0; transform: translateY(20px); backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+    to { opacity: 1; transform: translateY(0); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 }
 
-.avatar:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.685);
+.content-box { 
+    background-color: rgba(35, 35, 35, 0.25); 
+    border-radius: 15px; 
+    padding: 30px; 
+    margin-bottom: 30px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    width: 100%; 
+    box-sizing: border-box;
+    opacity: 0; 
+    transform: translateY(20px); 
+    backdrop-filter: blur(0px); 
+    -webkit-backdrop-filter: blur(0px);
+    animation: fadeInElementWithBlur 1.5s ease-in-out 0.2s forwards; 
 }
 
-/* --- Начало обновленного блока "вырывающаяся душа" глитч-эффекта --- */
-#username {
-    font-size: 2.8em;
-    margin-bottom: 15px;
-    letter-spacing: 2px;
-    position: relative;
-    color: #fff; /* Основной цвет текста - белый */
-    font-weight: bold; /* Сделаем шрифт чуть жирнее для лучшего эффекта */
-    /* data-text="grab1s" должен быть в HTML */
+.music-player { 
+    background-color: rgba(35, 35, 35, 0.25); 
+    border-radius: 15px; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 600px; 
+    width: 100%;
+    box-sizing: border-box;
+    opacity: 0; 
+    transform: translateY(20px); 
+    backdrop-filter: blur(0px); 
+    -webkit-backdrop-filter: blur(0px);
+    animation: fadeInElementWithBlur 1.5s ease-in-out 0.4s forwards; 
+    display: flex; /* Добавлено для управления дочерними элементами */
+    flex-direction: column; /* Дочерние элементы будут в столбик */
+    align-items: center; /* Центрируем дочерние элементы по горизонтали */
+} 
+
+footer { 
+    width: 100%; 
+    box-sizing: border-box;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
 }
 
-#username::before,
-#username::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* Важно, чтобы clip-path работал корректно */
-}
-
-/* Первый "слой души" - более темный, растягивающийся */
-#username::before {
-  color: #555; /* Темно-серый цвет "тени" или "остатка" */
-  /* Анимация растягивания и смещения */
-  animation: soul-tear-one 6s infinite ease-in-out alternate;
-  /* Добавляем легкий блюр для мягкости */
-  filter: blur(0.5px);
-}
-
-/* Второй "слой души" - светлый, как вырывающийся фрагмент */
-#username::after {
-  color: #ccc; /* Светло-серый, почти белый "осколок" */
-  /* Другая анимация для асинхронности и другого характера движения */
-  animation: soul-tear-two 8s infinite ease-in-out alternate;
-  /* Этот слой будет более резким */
-}
-
-@keyframes soul-tear-one {
-  0% {
-    clip-path: polygon(0% 0%, 10% 0%, 5% 100%, 0% 100%); /* Узкая полоса слева */
-    transform: translate(-2px, -1px) skewX(-5deg);
-    opacity: 0.7;
-  }
-  20% {
-    clip-path: polygon(0% 40%, 25% 50%, 15% 100%, 0% 90%); /* Фрагмент растягивается */
-    transform: translate(1px, 2px) scaleY(1.1) skewX(2deg);
-    opacity: 0.4;
-  }
-  40% {
-    clip-path: polygon(40% 0%, 50% 10%, 45% 80%, 35% 100%); /* Перемещается по тексту */
-    transform: translate(-1px, -2px) scaleX(1.2) skewX(-3deg);
-    opacity: 0.6;
-  }
-  60% {
-    clip-path: polygon(70% 30%, 90% 20%, 85% 90%, 65% 80%);
-    transform: translate(2px, 1px) scaleY(0.9) skewX(4deg);
-    opacity: 0.3;
-  }
-  80% {
-    clip-path: polygon(90% 0%, 100% 5%, 98% 100%, 88% 95%); /* Уходит вправо */
-    transform: translate(-2px, 2px) scaleX(1.1) skewX(-2deg);
-    opacity: 0.5;
-  }
-  100% {
-    clip-path: polygon(0% 50%, 15% 60%, 5% 100%, 0% 100%); /* Возвращается или меняется */
-    transform: translate(1px, -1px) skewX(5deg);
-    opacity: 0.7;
-  }
-}
-
-@keyframes soul-tear-two {
-  0% {
-    clip-path: inset(80% 0% 5% 0%); /* Тонкая полоска снизу */
-    transform: translate(1px, 1px) scale(1.05, 0.8); /* Слегка сплюснута и растянута */
-    opacity: 0.8;
-  }
-  25% {
-    clip-path: inset(5% 70% 60% 5%); /* Фрагмент слева, вертикальный */
-    transform: translate(-2px, -1px) scale(0.9, 1.2) skewY(-5deg);
-    opacity: 0.5;
-  }
-  50% {
-    clip-path: inset(40% 30% 30% 40%); /* "Ядро" буквы вырывается */
-    transform: translate(0.5px, 0.5px) scale(1.1, 1.1);
-    opacity: 0.9;
-    filter: drop-shadow(0 0 3px #fff); /* Легкое свечение для этого слоя */
-  }
-  75% {
-    clip-path: inset(10% 5% 50% 80%); /* Фрагмент справа, вертикальный */
-    transform: translate(2px, 1.5px) scale(0.95, 1.3) skewY(5deg);
-    opacity: 0.6;
-  }
-  100% {
-    clip-path: inset(5% 0% 85% 0%); /* Тонкая полоска сверху */
-    transform: translate(-1px, -1px) scale(1.05, 0.7);
-    opacity: 0.8;
-  }
-}
-/* --- Конец обновленного блока "вырывающаяся душа" глитч-эффекта --- */
-
-
-#bio {
-    font-size: 1.05em; /* Чуть крупнее */
-    margin-bottom: 35px;
-    line-height: 1.7;
-    color: #bbb;
-}
-
-.links {
-    display: flex;
-    flex-direction: column;
-    gap: 18px; /* Немного увеличим расстояние */
-    margin-bottom: 35px;
-}
-
-.link-button {
-    background-color: rgba(50, 50, 50, 0.7); /* Чуть прозрачнее */
-    color: #e0e0e0;
-    padding: 18px 25px;
-    text-decoration: none;
-    border-radius: 10px;
-    font-size: 1.15em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.link-button:hover {
-    background-color: rgba(80, 80, 80, 0.8);
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    color: #fff;
-}
-
-.link-button:active { /* Эффект при нажатии */
-    transform: translateY(-1px) scale(0.98);
-    background-color: rgba(90, 90, 90, 0.9);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-.link-button i {
-    font-size: 1.25em;
-}
-
-footer {
+footer > p { 
+    background-color: transparent; 
+    backdrop-filter: none !important; 
+    -webkit-backdrop-filter: none !important;
+    border: none;
+    box-shadow: none;
+    padding: 15px 0 0 0; 
+    margin-bottom: 0;
+    color: #999; 
     font-size: 0.9em;
-    color: #999;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    width: 100%; 
+    opacity: 0; 
+    transform: translateY(20px); 
+    animation: fadeInContainer 1.5s ease-in-out 0.6s forwards; 
+    text-align: center; 
 }
 
-.music-player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    padding: 20px;
-    background-color: rgba(25, 25, 25, 0.75);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
+.avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.8); margin-bottom: 20px; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease; object-fit: cover; }
+.avatar:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); }
+#username { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; position: relative; color: #fff; font-weight: bold; }
+#username::before, #username::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; }
+#username::before { color: #555; animation: soul-tear-one 6s infinite ease-in-out alternate; filter: blur(0.5px); }
+#username::after { color: #ccc; animation: soul-tear-two 8s infinite ease-in-out alternate; }
+@keyframes soul-tear-one { 0% { clip-path: polygon(0% 0%, 10% 0%, 5% 100%, 0% 100%); transform: translate(-2px, -1px) skewX(-5deg); opacity: 0.7; } 20% { clip-path: polygon(0% 40%, 25% 50%, 15% 100%, 0% 90%); transform: translate(1px, 2px) scaleY(1.1) skewX(2deg); opacity: 0.4; } 40% { clip-path: polygon(40% 0%, 50% 10%, 45% 80%, 35% 100%); transform: translate(-1px, -2px) scaleX(1.2) skewX(-3deg); opacity: 0.6; } 60% { clip-path: polygon(70% 30%, 90% 20%, 85% 90%, 65% 80%); transform: translate(2px, 1px) scaleY(0.9) skewX(4deg); opacity: 0.3; } 80% { clip-path: polygon(90% 0%, 100% 5%, 98% 100%, 88% 95%); transform: translate(-2px, 2px) scaleX(1.1) skewX(-2deg); opacity: 0.5; } 100% { clip-path: polygon(0% 50%, 15% 60%, 5% 100%, 0% 100%); transform: translate(1px, -1px) skewX(5deg); opacity: 0.7; } }
+@keyframes soul-tear-two { 0% { clip-path: inset(80% 0% 5% 0%); transform: translate(1px, 1px) scale(1.05, 0.8); opacity: 0.8; } 25% { clip-path: inset(5% 70% 60% 5%); transform: translate(-2px, -1px) scale(0.9, 1.2) skewY(-5deg); opacity: 0.5; } 50% { clip-path: inset(40% 30% 30% 40%); transform: translate(0.5px, 0.5px) scale(1.1, 1.1); opacity: 0.9; filter: drop-shadow(0 0 3px #fff); } 75% { clip-path: inset(10% 5% 50% 80%); transform: translate(2px, 1.5px) scale(0.95, 1.3) skewY(5deg); opacity: 0.6; } 100% { clip-path: inset(5% 0% 85% 0%); transform: translate(-1px, -1px) scale(1.05, 0.7); opacity: 0.8; } }
+#bio { font-size: 1em; margin-bottom: 25px; line-height: 1.6; color: #ccc; }
+.links { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+.link-button { background-color: rgba(60, 60, 60, 0.4); color: #e0e0e0; padding: 16px 20px; text-decoration: none; border-radius: 8px; font-size: 1.1em; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 2px 5px rgba(0,0,0,0.15); width: 100%; max-width: 350px; box-sizing: border-box; }
+.link-button:hover { background-color: rgba(90, 90, 90, 0.5); transform: translateY(-3px) scale(1.01); box-shadow: 0 3px 8px rgba(0,0,0,0.2); color: #fff; }
+.link-button:active { transform: translateY(-1px) scale(0.99); background-color: rgba(100, 100, 100, 0.6); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.link-button i { font-size: 1.2em; }
 
-.music-player .track-info {
+.music-player .track-info { 
     font-size: 1em;
     color: #e0e0e0;
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* Отступ под названием трека */
     min-height: 1.2em;
     font-weight: bold;
+    text-align: center; /* Убедимся, что текст названия центрирован */
+    width: 100%; /* Чтобы занимал всю ширину и text-align сработал */
 }
-
-.music-player .controls {
+.music-player .controls { 
     display: flex;
     align-items: center;
+    justify-content: center; /* Центрируем кнопки управления */
     gap: 20px;
+    width: 100%; /* Занимает всю ширину для центрирования */
+    margin-bottom: 8px; /* Отступ под кнопками */
 }
+.music-player button { background: none; border: 1px solid #999; color: #999; padding: 0; border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; transition: color 0.25s, border-color 0.25s, background-color 0.25s, transform 0.2s; }
+.music-player button:hover { color: #fff; border-color: #fff; background-color: rgba(255,255,255,0.1); }
+.music-player button:active { transform: scale(0.9); background-color: rgba(255,255,255,0.2); }
 
-.music-player button {
-    background: none;
-    border: 1px solid #999;
-    color: #999;
-    padding: 0; /* Убираем padding, т.к. размер задаем через width/height */
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: color 0.25s, border-color 0.25s, background-color 0.25s, transform 0.2s;
-}
-
-.music-player button:hover {
-    color: #fff;
-    border-color: #fff;
-    background-color: rgba(255,255,255,0.1);
-}
-.music-player button:active {
-    transform: scale(0.9);
-    background-color: rgba(255,255,255,0.2);
-}
-
-
-.music-player .progress-container {
+.music-player .progress-container { 
     display: flex;
     align-items: center;
-    width: 90%;
-    max-width: 350px;
+    width: 90%; /* Оставляем немного места по бокам */
+    max-width: 400px; /* Можно увеличить, если нужно шире */
     gap: 10px;
-    margin: 8px 0;
+    margin: 8px auto; /* auto для горизонтального центрирования */
     font-size: 0.85em;
 }
+#seek-slider { flex-grow: 1; height: 8px; }
 
-#seek-slider {
-    flex-grow: 1;
-    cursor: pointer;
-    height: 8px;
-}
-
-.music-player .volume-control {
+.music-player .volume-control { 
     display: flex;
     align-items: center;
+    justify-content: center; /* Центрируем элементы управления громкостью */
     gap: 10px;
-    width: 70%;
-    max-width: 250px;
-    justify-content: center;
+    width: 80%; /* Можно сделать чуть шире */
+    max-width: 280px; /* Ограничиваем */
+    margin: 0 auto; /* Горизонтальное центрирование */
 }
-.music-player .volume-control i {
-    font-size: 0.9em;
-}
+.music-player .volume-control i { font-size: 0.9em; }
+#volume-slider { width: 100px; height: 8px; }
 
-#volume-slider {
-    width: 100px;
-    cursor: pointer;
-    height: 8px;
-}
+input[type=range] { -webkit-appearance: none; appearance: none; background: transparent; }
+input[type=range]::-webkit-slider-runnable-track { height: 6px; background: #444; border-radius: 3px; transition: background-color 0.2s; }
+input[type=range]:hover::-webkit-slider-runnable-track { background: #555; }
+input[type=range]::-moz-range-track { height: 6px; background: #444; border-radius: 3px; transition: background-color 0.2s; }
+input[type=range]:hover::-moz-range-track { background: #555; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; margin-top: -4px; background-color: #ccc; height: 14px; width: 14px; border-radius: 50%; border: 1px solid #bbb; transition: background-color 0.2s, transform 0.2s; }
+input[type=range]:hover::-webkit-slider-thumb { background-color: #fff; transform: scale(1.1); }
+input[type=range]::-moz-range-thumb { background-color: #ccc; height: 12px; width: 12px; border-radius: 50%; border: 1px solid #bbb; transition: background-color 0.2s, transform 0.2s; }
+input[type=range]:hover::-moz-range-thumb { background-color: #fff; transform: scale(1.1); }
 
-input[type=range] {
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-  height: 6px;
-  background: #444; /* Темнее дорожка */
-  border-radius: 3px;
-  transition: background-color 0.2s;
-}
-input[type=range]:hover::-webkit-slider-runnable-track {
-  background: #555;
-}
-
-input[type=range]::-moz-range-track {
-  height: 6px;
-  background: #444;
-  border-radius: 3px;
-  transition: background-color 0.2s;
-}
-input[type=range]:hover::-moz-range-track {
-  background: #555;
-}
-
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  margin-top: -4px;
-  background-color: #ccc; /* Светлее ползунок */
-  height: 14px;
-  width: 14px;
-  border-radius: 50%;
-  border: 1px solid #bbb;
-  transition: background-color 0.2s, transform 0.2s;
-}
-input[type=range]:hover::-webkit-slider-thumb {
-  background-color: #fff;
-  transform: scale(1.1);
-}
-
-input[type=range]::-moz-range-thumb {
-  background-color: #ccc;
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  border: 1px solid #bbb;
-  transition: background-color 0.2s, transform 0.2s;
-}
-input[type=range]:hover::-moz-range-thumb {
-  background-color: #fff;
-  transform: scale(1.1);
-}
-
-/* Responsive adjustments */
 @media (max-width: 600px) {
-    body {
-        padding-top: 3vh;
-        padding-bottom: 3vh;
-    }
-    .container {
-        padding: 20px;
-    }
-    #username {
-        font-size: 2.2em;
-    }
-    .avatar {
-        width: 100px;
-        height: 100px;
-    }
-    .link-button {
-        padding: 15px 20px;
-        font-size: 1.1em;
-    }
-    .music-player .progress-container,
-    .music-player .volume-control {
-        width: 100%;
-    }
+    body { padding-top: 3vh; padding-bottom: 3vh; }
+    .content-box, .music-player { padding: 20px; margin-bottom: 20px; }
+    #username { font-size: 2.2em; }
+    .avatar { width: 100px; height: 100px; }
+    .link-button { padding: 15px 20px; font-size: 1.1em; max-width: 100%; }
+    .music-player .progress-container, .music-player .volume-control { width: 100%; max-width: none; /* Убираем max-width на мобильных, чтобы занимали всю ширину */ }
 }
