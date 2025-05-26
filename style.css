@@ -7,7 +7,7 @@ body, html {
     height: 100%;
     font-family: 'Roboto Mono', monospace;
     color: #fff;
-    overflow: hidden; /* Предотвращает прокрутку из-за видеофона */
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,7 +21,7 @@ body, html {
     min-width: 100%;
     min-height: 100%;
     z-index: -2;
-    object-fit: cover; /* Покрывает всю область, обрезая лишнее */
+    object-fit: cover;
 }
 
 .overlay {
@@ -30,7 +30,7 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Затемняющий слой поверх видео */
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: -1;
 }
 
@@ -56,6 +56,7 @@ body, html {
     margin-bottom: 20px;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     transition: transform 0.3s ease;
+    object-fit: cover; /* Для корректного отображения аватара */
 }
 
 .avatar:hover {
@@ -66,7 +67,6 @@ body, html {
     font-size: 2.5em;
     margin-bottom: 10px;
     letter-spacing: 2px;
-    /* Будет анимирован JS */
 }
 
 #bio {
@@ -114,10 +114,26 @@ footer {
 
 .music-player {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 10px;
     margin-bottom: 15px;
+    padding: 15px;
+    background-color: rgba(30, 30, 30, 0.7);
+    border-radius: 8px;
+}
+
+.music-player .track-info {
+    font-size: 0.9em;
+    color: #ddd;
+    margin-bottom: 5px;
+    min-height: 1.2em; /* Чтобы не прыгало при смене трека */
+}
+
+.music-player .controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .music-player button {
@@ -125,36 +141,65 @@ footer {
     border: 1px solid #aaa;
     color: #aaa;
     padding: 8px 12px;
-    border-radius: 5px;
+    border-radius: 50%; /* Круглые кнопки */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    transition: color 0.3s, border-color 0.3s;
+    transition: color 0.3s, border-color 0.3s, background-color 0.3s;
 }
 
 .music-player button:hover {
     color: #fff;
     border-color: #fff;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.music-player .progress-container {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+#seek-slider {
+    flex-grow: 1;
+    cursor: pointer;
+    height: 8px; /* Увеличим немного высоту */
+}
+
+.music-player .volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 60%;
+    justify-content: center;
 }
 
 #volume-slider {
     width: 100px;
     cursor: pointer;
+    height: 8px; /* Увеличим немного высоту */
 }
 
-/* Стили для ползунка громкости (могут отличаться в разных браузерах) */
+/* Стили для ползунков (могут отличаться в разных браузерах) */
 input[type=range] {
   -webkit-appearance: none;
   appearance: none;
-  background: transparent;
+  background: transparent; /* Убираем стандартный фон */
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-  height: 5px;
+  height: 6px;
   background: #555;
   border-radius: 3px;
 }
 
 input[type=range]::-moz-range-track {
-  height: 5px;
+  height: 6px;
   background: #555;
   border-radius: 3px;
 }
@@ -162,18 +207,18 @@ input[type=range]::-moz-range-track {
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  margin-top: -5px; /* Половина высоты ползунка минус половина высоты дорожки */
+  margin-top: -4px; /* (track_height - thumb_height) / 2 */
   background-color: #fff;
-  height: 15px;
-  width: 15px;
+  height: 14px;
+  width: 14px;
   border-radius: 50%;
   border: 1px solid #ddd;
 }
 
 input[type=range]::-moz-range-thumb {
   background-color: #fff;
-  height: 13px;
-  width: 13px;
+  height: 12px;
+  width: 12px;
   border-radius: 50%;
   border: 1px solid #ddd;
 }
@@ -184,8 +229,8 @@ input[type=range]::-moz-range-thumb {
     height: 20px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.2);
-    pointer-events: none; /* Чтобы не мешал кликам */
-    transform: translate(-50%, -50%); /* Центрирует элемент относительно курсора */
-    z-index: 9999; /* Чтобы был поверх других элементов */
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
     box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2);
 }
