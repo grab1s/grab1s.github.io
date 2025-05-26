@@ -9,8 +9,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div id="cursor-glow"></div> <!-- Наш кастомный курсор/эффект касания -->
+
     <video autoplay muted loop id="background-video">
-        <!-- <source src="path/to/your/video.mp4" type="video/mp4"> -->
+        <!-- ИСТОЧНИК БУДЕТ УСТАНОВЛЕН ЧЕРЕЗ JAVASCRIPT -->
+        <source id="video-source" src="" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
@@ -19,48 +22,45 @@
     <div class="container">
         <header>
             <img src="image/logo.jpg" alt="Avatar" class="avatar">
-            <h1 id="username">grab1s</h1>
-            <p id="bio">sup. AHK | GBS owner and python, LuaU dev.</p>
+            <h1 id="username" data-text="grabis">grabis</h1>
+            <p id="bio">AHK | GBS owner</p>
         </header>
 
         <main class="links">
-            <a href="#" target="_blank" class="link-button">
-                <i class="fab fa-github"></i> Project
+            <a href="https://t.me/ahk_gbs" target="_blank" class="link-button">
+                <i class="fas fa-project-diagram"></i> Project
             </a>
-            <a href="#" target="_blank" class="link-button">
-                <i class="fab fa-telegram-plane"></i> Me in Discord
+            <a href="https://t.me/grab1s" target="_blank" class="link-button">
+                <i class="fab fa-telegram-plane"></i> My Telegram
             </a>
-            <a href="#" target="_blank" class="link-button">
-                <i class="fas fa-envelope"></i> Me in Telegram
-            </a>
-            <a href="#" target="_blank" class="link-button">
-                <i class="fab fa-youtube"></i> rickroll
+            <a href="https://discord.com/users/708708021857026063" target="_blank" class="link-button">
+                <i class="fab fa-discord"></i> My Discord
             </a>
         </main>
 
         <footer>
             <div class="music-player">
-                <audio id="background-music"></audio> <!-- source будет устанавливаться через JS -->
+                <audio id="background-music"></audio>
                 <div class="track-info">
                     <span id="track-title">Название трека</span>
                 </div>
                 <div class="controls">
-                    <button id="prev-track-button"><i class="fas fa-step-backward"></i></button>
-                    <button id="play-pause-button"><i class="fas fa-play"></i></button>
-                    <button id="next-track-button"><i class="fas fa-step-forward"></i></button>
+                    <button id="prev-track-button" aria-label="Previous Track"><i class="fas fa-step-backward"></i></button>
+                    <button id="play-pause-button" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
+                    <button id="next-track-button" aria-label="Next Track"><i class="fas fa-step-forward"></i></button>
                 </div>
                 <div class="progress-container">
                     <span id="current-time">0:00</span>
-                    <input type="range" id="seek-slider" value="0" max="100">
+                    <input type="range" id="seek-slider" value="0" max="100" aria-label="Seek slider">
                     <span id="total-duration">0:00</span>
                 </div>
                 <div class="volume-control">
                     <i class="fas fa-volume-down"></i>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume slider">
                     <i class="fas fa-volume-up"></i>
                 </div>
             </div>
-            <p>grabis. все права вытраханы</p>
+            <p>© <span id="year"></span> grabis. Все права не защищены.</p>
         </footer>
     </div>
 
