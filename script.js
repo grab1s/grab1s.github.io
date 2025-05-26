@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getRandomDesktopVideo() {
         if (availableDesktopVideos.length === 0) {
-            console.warn("Все доступные десктопные видео были опробованы.");
+            console.warn("Все доступные видео были опробованы.");
             return null;
         }
         const randomIndex = Math.floor(Math.random() * availableDesktopVideos.length);
