@@ -1,21 +1,105 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Эффект пишущей машинки
-    const usernameEl = document.getElementById('username');
-    if (usernameEl) {
-        const usernameText = usernameEl.textContent;
-        usernameEl.textContent = '';
-        let i = 0;
-        function typeWriter() {
-            if (i < usernameText.length) {
-                usernameEl.textContent += usernameText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 150);
+    const cursorGlow = document.getElementById('cursor-glow');
+    let touchTimeout;
+
+    // --- Логика для фонового видео ---
+    const backgroundVideoElement = document.getElementById('background-video'); // Переименовал, чтобы не конфликтовать с переменной в старом коде
+    const videoSourceElement = document.getElementById('video-source'); // Переименовал
+
+    const desktopVideoSrc = 'video/2.mp4'; // Пример:  видео для десктопа
+    const mobileVideoSrc = 'video/1.mp4';   // Пример:  видео для мобильных
+
+
+    function setBackgroundVideo() {
+        if (backgroundVideoElement && videoSourceElement) {
+            let videoToLoad = '';
+            // Определяем по ширине экрана. Порог 768px часто используется для мобильных.
+            if (window.innerWidth <= 768) {
+                videoToLoad = mobileVideoSrc;
+            } else {
+                videoToLoad = desktopVideoSrc;
             }
+
+            if (videoToLoad && videoSourceElement.getAttribute('src') !== videoToLoad) { // Проверяем, нужно ли менять источник
+                videoSourceElement.setAttribute('src', videoToLoad);
+                backgroundVideoElement.load(); // Перезагружаем видео с новым источником
+                backgroundVideoElement.play().catch(error => {
+                    console.warn("Autoplay для видеофона был предотвращен:", error);
+                });
+            } else if (!videoToLoad) {
+                applyFallbackBackground();
+            }
+        } else {
+            applyFallbackBackground();
         }
-        typeWriter();
     }
 
-    // Музыкальный плеер
+    function applyFallbackBackground() {
+        const overlayDiv = document.querySelector('.overlay');
+        if (overlayDiv) {
+             overlayDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.71)'; // Менее интенсивный, если нет видео
+        }
+    }
+    
+    setBackgroundVideo(); // Устанавливаем видео при загрузке
+
+    // --- Логика для эффекта курсора/касания ---
+    function updateGlowPosition(x, y) {
+        if (cursorGlow) {
+            cursorGlow.style.left = `${x}px`;
+            cursorGlow.style.top = `${y}px`;
+        }
+    }
+
+    function showGlow(isTouchActive = false) {
+        if (cursorGlow) {
+            cursorGlow.classList.add('visible');
+            if (isTouchActive) {
+                cursorGlow.classList.add('touch-active');
+            } else {
+                cursorGlow.classList.remove('touch-active');
+            }
+            clearTimeout(touchTimeout); // Если был таймаут на скрытие, отменяем
+        }
+    }
+
+    function hideGlow(delay = 300) { 
+        if (cursorGlow) {
+            cursorGlow.classList.remove('touch-active'); 
+            touchTimeout = setTimeout(() => {
+                cursorGlow.classList.remove('visible');
+            }, delay);
+        }
+    }
+    
+    document.addEventListener('mousemove', (e) => {
+        updateGlowPosition(e.clientX, e.clientY);
+        showGlow();
+    });
+    document.addEventListener('mouseleave', () => {
+        hideGlow(0); 
+    });
+
+    document.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        updateGlowPosition(touch.clientX, touch.clientY);
+        showGlow(true); 
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0];
+        updateGlowPosition(touch.clientX, touch.clientY);
+        showGlow(true); 
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+        hideGlow(); 
+    });
+    document.addEventListener('touchcancel', () => {
+        hideGlow(); 
+    });
+
+    // --- Музыкальный плеер ---
     const backgroundMusic = document.getElementById('background-music');
     const playPauseButton = document.getElementById('play-pause-button');
     const prevTrackButton = document.getElementById('prev-track-button');
@@ -27,33 +111,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const trackTitleEl = document.getElementById('track-title');
     const musicPlayerDiv = document.querySelector('.music-player');
 
-    // --- ВАЖНО: Замените на имена ваших файлов в папке /music/ ---
-    const musicFiles = [
-        '1.mp3', '2.m4a', '3.mp3', '4.mp3', '5.mp3',
-        '6.mp3', '7.mp3', '8.mp3', '9.mp3', '10.mp3'
+    const musicPlaylist = [
+        { src: 'music/1.mp3', displayName: 'орущая хуйня' },
+        { src: 'music/2.m4a', displayName: 'ай лав ю' },
+        { src: 'music/3.mp3', displayName: 'мунимуни мурамура' },
+        { src: 'music/4.mp3', displayName: 'гроза твича' },
+        { src: 'music/5.mp3', displayName: 'СИСЯМБЫ' },
+        { src: 'music/6.mp3', displayName: 'главный герой' },
+        { src: 'music/7.mp3', displayName: 'где папа?' },
+        { src: 'music/8.mp3', displayName: 'о да' },
+        { src: 'music/9.mp3', displayName: 'гоу, джаст гоу' },
+        { src: 'music/10.mp3', displayName: 'Я ПОД НЕЁ ХВХ ЕБАЛ ВСЕХ' }
     ];
-    // -----------------------------------------------------------
 
     let currentTrackIndex = 0;
     let isPlaying = false;
 
     function loadTrack(trackIndex) {
-        if (!backgroundMusic || musicFiles.length === 0) {
+        if (!backgroundMusic || musicPlaylist.length === 0) {
             if (musicPlayerDiv) musicPlayerDiv.style.display = 'none';
             return;
         }
+        const track = musicPlaylist[trackIndex];
         currentTrackIndex = trackIndex;
-        backgroundMusic.src = 'music/' + musicFiles[currentTrackIndex];
-        backgroundMusic.load(); // Загружаем трек
+        backgroundMusic.src = track.src;
+        backgroundMusic.load();
         
         if(trackTitleEl) {
-            // Убираем расширение .mp3 и делаем первую букву заглавной для отображения
-            let displayName = musicFiles[currentTrackIndex].replace('.mp3', '');
-            displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-            trackTitleEl.textContent = displayName;
+            trackTitleEl.textContent = track.displayName;
         }
         
-        // Сбрасываем время и ползунок при загрузке нового трека
         if (currentTimeEl) currentTimeEl.textContent = formatTime(0);
         if (totalDurationEl) totalDurationEl.textContent = formatTime(0);
         if (seekSlider) seekSlider.value = 0;
@@ -61,9 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playTrack() {
         if (!backgroundMusic || !backgroundMusic.src) return;
-        backgroundMusic.play();
-        isPlaying = true;
-        if (playPauseButton) playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        backgroundMusic.play().then(() => {
+            isPlaying = true;
+            if (playPauseButton) playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        }).catch(error => {
+            console.error("Ошибка воспроизведения аудио:", error);
+            isPlaying = false;
+            if (playPauseButton) playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+        });
     }
 
     function pauseTrack() {
@@ -82,17 +174,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function nextTrack() {
-        if (musicFiles.length === 0) return;
-        currentTrackIndex = (currentTrackIndex + 1) % musicFiles.length;
+        if (musicPlaylist.length === 0) return;
+        currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
         loadTrack(currentTrackIndex);
-        playTrack(); // Автоматически проигрывать следующий трек
+        playTrack();
     }
 
     function prevTrack() {
-        if (musicFiles.length === 0) return;
-        currentTrackIndex = (currentTrackIndex - 1 + musicFiles.length) % musicFiles.length;
+        if (musicPlaylist.length === 0) return;
+        currentTrackIndex = (currentTrackIndex - 1 + musicPlaylist.length) % musicPlaylist.length;
         loadTrack(currentTrackIndex);
-        playTrack(); // Автоматически проигрывать предыдущий трек
+        playTrack();
     }
 
     function formatTime(seconds) {
@@ -103,20 +195,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateSeekSlider() {
         if (backgroundMusic && seekSlider && currentTimeEl && totalDurationEl) {
-            if (backgroundMusic.duration) {
+            if (backgroundMusic.duration && !isNaN(backgroundMusic.duration)) {
                 seekSlider.value = (backgroundMusic.currentTime / backgroundMusic.duration) * 100;
                 currentTimeEl.textContent = formatTime(backgroundMusic.currentTime);
                 totalDurationEl.textContent = formatTime(backgroundMusic.duration);
+            } else { 
+                seekSlider.value = 0;
+                currentTimeEl.textContent = formatTime(0);
+                if (backgroundMusic.duration && !isNaN(backgroundMusic.duration)) {
+                    totalDurationEl.textContent = formatTime(backgroundMusic.duration);
+                } else {
+                    totalDurationEl.textContent = "0:00"; 
+                }
             }
         }
     }
     
-    if (musicFiles.length > 0 && backgroundMusic) {
-        // Выбираем случайный трек при первой загрузке
-        const randomIndex = Math.floor(Math.random() * musicFiles.length);
+    if (musicPlaylist.length > 0 && backgroundMusic && musicPlayerDiv) {
+        const randomIndex = Math.floor(Math.random() * musicPlaylist.length);
         loadTrack(randomIndex);
-        // Не будем автоматически проигрывать при загрузке страницы, пусть пользователь нажмет play
-        // Если хотите автоплей, добавьте: playTrack();
 
         if (playPauseButton) playPauseButton.addEventListener('click', playPauseToggle);
         if (nextTrackButton) nextTrackButton.addEventListener('click', nextTrack);
@@ -131,42 +228,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (seekSlider) {
             seekSlider.addEventListener('input', () => {
-                if (backgroundMusic.duration) {
+                if (backgroundMusic.duration && !isNaN(backgroundMusic.duration)) {
                     backgroundMusic.currentTime = (seekSlider.value / 100) * backgroundMusic.duration;
                 }
             });
         }
         
         backgroundMusic.addEventListener('timeupdate', updateSeekSlider);
-        backgroundMusic.addEventListener('loadedmetadata', updateSeekSlider); // Обновить длительность, когда метаданные загружены
-        backgroundMusic.addEventListener('ended', nextTrack); // Автоматически переключать на следующий трек по завершении
+        backgroundMusic.addEventListener('loadedmetadata', () => {
+             updateSeekSlider(); 
+             if (isPlaying) playTrack(); 
+        });
+        backgroundMusic.addEventListener('ended', nextTrack);
+        backgroundMusic.addEventListener('error', (e) => {
+            console.error("Ошибка аудио элемента:", e);
+            if (trackTitleEl) trackTitleEl.textContent = "Ошибка загрузки трека";
+        });
 
     } else {
         if (musicPlayerDiv) {
-            musicPlayerDiv.style.display = 'none'; // Скрываем плеер, если нет треков или элемента audio
+            musicPlayerDiv.style.display = 'none';
         }
     }
-
-
-    // Проверка наличия видеофона
-    const backgroundVideo = document.getElementById('background-video');
-    if (backgroundVideo) {
-        const videoSource = backgroundVideo.querySelector('source');
-        if (!videoSource || !videoSource.getAttribute('src') || videoSource.getAttribute('src') === "") {
-            document.body.style.backgroundColor = '#1a1a1a';
-            if (document.querySelector('.overlay')) {
-                document.querySelector('.overlay').style.backgroundColor = 'rgba(0,0,0,0.3)';
-            }
-        }
+    
+    // Обновление года в копирайте
+    const yearEl = document.getElementById('year');
+    if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
     }
-
-    // Эффект следования курсора
-    const cursorEffect = document.createElement('div');
-    cursorEffect.classList.add('cursor-glow');
-    document.body.appendChild(cursorEffect);
-
-    document.addEventListener('mousemove', (e) => {
-        cursorEffect.style.left = e.clientX + 'px';
-        cursorEffect.style.top = e.clientY + 'px';
-    });
 });
