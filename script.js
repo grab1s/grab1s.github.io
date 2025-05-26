@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicPlayerDiv = document.querySelector('.music-player');
 
     const musicPlaylist = [ 
-        { src: 'music/1.mp3', displayName: 'ОРУЩАЯ ДУРА' }, { src: 'music/2.m4a', displayName: 'АЙ ЛАВ Ю СОУУ' }, { src: 'music/3.mp3', displayName: 'MUNIMUNI MURAMURA' }, { src: 'music/4.mp3', displayName: 'ГРОЗА ТВИЧА' }, { src: 'music/5.mp3', displayName: 'СИСЯМБЫ' }, { src: 'music/6.mp3', displayName: 'ГЛАВНЫЙ ГЕРОЙ' }, { src: 'music/7.mp3', displayName: 'GDE PAPA' }, { src: 'music/8.mp3', displayName: 'hell.. YEAH' }, { src: 'music/9.mp3', displayName: 'GO, JUST GO' }, { src: 'music/10.mp3', displayName: 'Я ПОД НЕЁ НА ХВХ ЕБАЛ ВСЕХ' } 
+        { src: 'music/1.mp3', displayName: 'ОРУЩАЯ ДУРА' }, { src: 'music/2.m4a', displayName: 'АЙ ЛАВ Ю СОУУ' }, { src: 'music/3.mp3', displayName: 'MUNIMUNI MURAMURA' }, { src: 'music/4.mp3', displayName: 'ГРОЗА ТВИЧА' }, { src: 'music/5.mp3', displayName: 'СИСЯМБЫ' }, { src: 'music/6.mp3', displayName: 'ГЛАВНЫЙ ГЕРОЙ' }, { src: 'music/7.mp3', displayName: 'GDE PAPA' }, { src: 'music/8.mp3', displayName: 'hell.. YEAH' }, { src: 'music/9.mp3', displayName: 'GO, JUST GO' }, { src: 'music/10.mp3', displayName: 'Я ПОД ЭТО НА ХВХ ПЕНИЛ' } 
     ];
 
     let currentTrackIndex = 0; 
