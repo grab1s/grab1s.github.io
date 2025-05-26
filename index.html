@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div id="cursor-glow"></div> <!-- Наш кастомный курсор/эффект касания -->
+    <div id="cursor-glow"></div>
 
     <video autoplay muted loop id="background-video">
-        <!-- ИСТОЧНИК БУДЕТ УСТАНОВЛЕН ЧЕРЕЗ JAVASCRIPT -->
         <source id="video-source" src="" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -20,23 +19,27 @@
     <div class="overlay"></div>
 
     <div class="container">
-        <header>
-            <img src="image/logo.jpg" alt="Avatar" class="avatar">
-            <h1 id="username" data-text="grabis">grabis</h1>
-            <p id="bio">AHK | GBS owner</p>
-        </header>
+        <!-- Новый div-обертка для эффекта -->
+        <div class="content-box"> 
+            <header>
+                <img src="image/logo.jpg" alt="Avatar" class="avatar">
+                <h1 id="username" data-text="grabis">grabis</h1>
+                <p id="bio">AHK | GBS owner</p>
+            </header>
 
-        <main class="links">
-            <a href="https://t.me/ahk_gbs" target="_blank" class="link-button">
-                <i class="fas fa-project-diagram"></i> Project
-            </a>
-            <a href="https://t.me/grab1s" target="_blank" class="link-button">
-                <i class="fab fa-telegram-plane"></i> My Telegram
-            </a>
-            <a href="https://discord.com/users/708708021857026063" target="_blank" class="link-button">
-                <i class="fab fa-discord"></i> My Discord
-            </a>
-        </main>
+            <main class="links">
+                <a href="https://t.me/ahk_gbs" target="_blank" class="link-button">
+                    <i class="fas fa-project-diagram"></i> Project
+                </a>
+                <a href="https://t.me/grab1s" target="_blank" class="link-button">
+                    <i class="fab fa-telegram-plane"></i> My Telegram
+                </a>
+                <a href="https://discord.com/users/708708021857026063" target="_blank" class="link-button">
+                    <i class="fab fa-discord"></i> My Discord
+                </a>
+            </main>
+        </div> 
+        <!-- Конец нового div-обертки -->
 
         <footer>
             <div class="music-player">
