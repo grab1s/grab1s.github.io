@@ -38,8 +38,8 @@ body {
 
 #cursor-glow {
     position: fixed;
-    width: 28px; 
-    height: 30px;
+    width: 16px; 
+    height: 16px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.281);
     box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.116);
