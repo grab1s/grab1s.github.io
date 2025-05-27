@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- НАЧАЛО БЛОКА 3D СЛЕДОВАНИЯ ЗА КУРСОРОМ (TILT EFFECT) ---
-    const tiltElements = document.querySelectorAll('.content-box, .music-player');
+    const tiltElements = document.querySelectorAll('.content-box');
     const maxTilt = 8; 
     const deadZoneFactor = 0.4; 
 
