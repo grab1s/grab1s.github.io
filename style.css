@@ -9,21 +9,12 @@ body, html {
     color: #fff;
     background-color: #121212; 
     cursor: none !important; 
-    overflow-x: hidden; 
+    height: 100%; 
+    overflow-x: hidden;
+    /* overflow-y: hidden; /* ВРЕМЕННО ДЛЯ ТЕСТА, если слайдбар от 3D мешает */
 }
 
-/* Дополнительно убираем курсор для всех интерактивных элементов */
-a, 
-button, 
-input[type="button"], 
-input[type="submit"], 
-input[type="reset"],
-input[type="range"],
-[role="button"],
-.link-button, 
-#play-pause-button,
-#prev-track-button,
-#next-track-button {
+a, button, input[type="button"], input[type="submit"], input[type="reset"], input[type="range"], [role="button"], .link-button, #play-pause-button, #prev-track-button, #next-track-button {
     cursor: none !important;
 }
 
@@ -34,6 +25,7 @@ body {
     padding: 5vh 0; 
     box-sizing: border-box; 
     min-height: 100vh; 
+    perspective: 1000px; 
 }
 
 #cursor-glow {
@@ -42,7 +34,7 @@ body {
     height: 16px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.281);
-    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.116);
+    box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.116);
     pointer-events: none; 
     transform: translate(-50%, -50%) scale(0); 
     z-index: 9999;
@@ -56,7 +48,7 @@ body {
 }
 
 #cursor-glow.touch-active { 
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: translate(-50%, -50%) scale(1.15); 
     background-color: rgba(255, 255, 255, 0.144);
 }
 
@@ -90,6 +82,7 @@ body {
     display: flex; 
     flex-direction: column;
     align-items: center; 
+    transform-style: preserve-3d; 
 }
 
 @keyframes fadeInContainer { 
@@ -103,22 +96,22 @@ body {
     }
 }
 
+/* Анимация появления БЕЗ TRANSFORM */
 @keyframes fadeInElementWithBlur { 
     from { 
         opacity: 0; 
-        transform: translateY(20px); 
         backdrop-filter: blur(0px); 
         -webkit-backdrop-filter: blur(0px); 
     }
     to { 
         opacity: 1; 
-        transform: translateY(0); 
         backdrop-filter: blur(10px); 
         -webkit-backdrop-filter: blur(10px); 
     }
 }
 
-.content-box { 
+.content-box, 
+.music-player { 
     background-color: rgba(35, 35, 35, 0.25); 
     border-radius: 15px; 
     padding: 30px; 
@@ -127,43 +120,34 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1); 
     width: 100%; 
     box-sizing: border-box;
-    opacity: 0; 
-    transform: translateY(20px); 
-    backdrop-filter: blur(0px); 
+    opacity: 0; /* Начальная прозрачность для анимации */
+    /* transform убран отсюда, им управляет JS */
+    backdrop-filter: blur(0px); /* Начальный блюр */
     -webkit-backdrop-filter: blur(0px);
     animation: fadeInElementWithBlur 1.5s ease-in-out 0.2s forwards; 
-    display: flex; /* Добавляем flex для .content-box */
-    flex-direction: column; /* Чтобы header и main.links были друг под другом */
-    align-items: center; /* Центрируем header и main.links по горизонтали */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-style: preserve-3d; 
+    transition: transform 0.05s linear; 
 }
 
-/* Стили для header внутри .content-box */
+.music-player {
+    padding: 20px; 
+    margin-bottom: 20px; 
+    max-width: 600px; 
+    animation-delay: 0.4s; 
+}
+
+/* ... ОСТАЛЬНЫЕ ВАШИ СТИЛИ ... (аватар, ник, кнопки, плеер и т.д. без изменений) */
+/* Убедитесь, что они не переопределяют transform для .content-box или .music-player */
+
 .content-box header {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Центрируем аватар, ник, био */
-    width: 100%; /* Чтобы занимал всю ширину для центрирования */
-}
-
-.music-player { 
-    background-color: rgba(35, 35, 35, 0.25); 
-    border-radius: 15px; 
-    padding: 20px; 
-    margin-bottom: 20px; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    max-width: 600px; 
-    width: 100%;
-    box-sizing: border-box;
-    opacity: 0; 
-    transform: translateY(20px); 
-    backdrop-filter: blur(0px); 
-    -webkit-backdrop-filter: blur(0px);
-    animation: fadeInElementWithBlur 1.5s ease-in-out 0.4s forwards; 
-    display: flex; 
-    flex-direction: column; 
     align-items: center; 
-} 
+    width: 100%; 
+}
 
 footer { 
     width: 100%; 
@@ -195,27 +179,27 @@ footer > p {
     height: 120px;
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.8); 
-    margin-bottom: 20px; /* Отступ под аватаром */
+    margin-bottom: 20px; 
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
     object-fit: cover;
 }
 .avatar:hover { 
-    transform: scale(1.1);
+    transform: scale(1.1); 
     box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
 }
 
 #username { 
     font-size: 2.5em; 
-    margin-top: 0; /* Убираем верхний отступ, если он есть от h1 по умолчанию */
-    margin-bottom: 10px; /* Отступ под ником */
+    margin-top: 0; 
+    margin-bottom: 10px; 
     letter-spacing: 2px;
     position: relative; 
     color: #fff; 
     font-weight: bold; 
     display: inline-block; 
     outline: none; 
-    text-align: center; /* Дополнительно для самого текста, если display:block */
+    text-align: center; 
 }
 #username::before, 
 #username::after { 
@@ -284,11 +268,11 @@ footer > p {
 
 #bio { 
     font-size: 1em; 
-    margin-top: 0; /* Убираем верхний отступ */
-    margin-bottom: 25px; /* Отступ под био до ссылок */
+    margin-top: 0; 
+    margin-bottom: 25px; 
     line-height: 1.6;
     color: #ccc;
-    text-align: center; /* Убедимся, что текст био центрирован */
+    text-align: center; 
 }
 
 .links { 
@@ -450,6 +434,10 @@ input[type=range]::-moz-range-thumb {
 input[type=range]:hover::-moz-range-thumb { 
   background-color: #fff;
   transform: scale(1.1);
+}
+
+@media (max-width: 1024px) { 
+    /* JS будет отключать слушатель mousemove для 3D эффекта */
 }
 
 @media (max-width: 600px) {
