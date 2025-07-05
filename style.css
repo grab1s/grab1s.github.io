@@ -11,7 +11,6 @@ body, html {
     cursor: none !important; 
     height: 100%; 
     overflow-x: hidden;
-    /* overflow-y: hidden; /* ВРЕМЕННО ДЛЯ ТЕСТА, если слайдбар от 3D мешает */
 }
 
 a, button, input[type="button"], input[type="submit"], input[type="reset"], input[type="range"], [role="button"], .link-button, #play-pause-button, #prev-track-button, #next-track-button {
@@ -96,7 +95,6 @@ body {
     }
 }
 
-/* Анимация появления БЕЗ TRANSFORM */
 @keyframes fadeInElementWithBlur { 
     from { 
         opacity: 0; 
@@ -120,9 +118,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1); 
     width: 100%; 
     box-sizing: border-box;
-    opacity: 0; /* Начальная прозрачность для анимации */
-    /* transform убран отсюда, им управляет JS */
-    backdrop-filter: blur(0px); /* Начальный блюр */
+    opacity: 0; 
+    backdrop-filter: blur(0px); 
     -webkit-backdrop-filter: blur(0px);
     animation: fadeInElementWithBlur 1.5s ease-in-out 0.2s forwards; 
     display: flex;
@@ -138,9 +135,6 @@ body {
     max-width: 600px; 
     animation-delay: 0.4s; 
 }
-
-/* ... ОСТАЛЬНЫЕ ВАШИ СТИЛИ ... (аватар, ник, кнопки, плеер и т.д. без изменений) */
-/* Убедитесь, что они не переопределяют transform для .content-box или .music-player */
 
 .content-box header {
     display: flex;
@@ -437,7 +431,6 @@ input[type=range]:hover::-moz-range-thumb {
 }
 
 @media (max-width: 1024px) { 
-    /* JS будет отключать слушатель mousemove для 3D эффекта */
 }
 
 @media (max-width: 600px) {
