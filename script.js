@@ -2,13 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cursorGlow = document.getElementById('cursor-glow');
     let touchTimeout;
 
-    // --- Блок управления фоновым видео ---
     const backgroundVideoElement = document.getElementById('background-video');
     const videoSourceElement = document.getElementById('video-source'); 
     
     const mobileVideoSrc = 'video/1.mp4';   
     const desktopVideoFiles = [];
-    for (let i = 2; i <= 22; i++) { 
+    for (let i = 2; i <= 13; i++) { 
         desktopVideoFiles.push(`video/${i}.mp4`);
     }
 
@@ -67,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 } else {
                      if(window.innerWidth > 768) { 
-                         // Ничего не делаем, если промис не поддерживается (старые браузеры)
                      } else {
                          applyFallbackBackground();
                      }
@@ -131,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     setBackgroundVideo(); 
 
-    // --- Блок эффекта наклона (Tilt Effect) ---
     const tiltElements = document.querySelectorAll('.content-box');
     const maxTilt = 8; 
     const deadZoneFactor = 0.4; 
@@ -196,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleTiltListener(); 
     window.addEventListener('resize', toggleTiltListener); 
 
-    // --- Блок эффекта курсора (Cursor Glow) ---
     function updateGlowPosition(x, y) {
         if (cursorGlow) {
             cursorGlow.style.left = `${x}px`;
@@ -262,14 +258,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const musicPlaylist = [ 
         { src: 'music/1.mp3', displayName: 'ОРУЩАЯ ДУРА' }, 
-        { src: 'music/2.m4a', displayName: 'АЙ ЛАВ Ю СОУ' }, 
+        { src: 'music/2.m4a', displayName: 'АЙ ЛАВ Ю СОУУ' }, 
         { src: 'music/3.m4a', displayName: 'Я В ПОТОКЕ' }, 
         { src: 'music/4.mp3', displayName: 'ГРОЗА ТВИЧА' }, 
         { src: 'music/5.mp3', displayName: 'СИСЯМБЫ' }, 
         { src: 'music/6.mp3', displayName: 'ГЛАВНЫЙ ГЕРОЙ' }, 
         { src: 'music/7.mp3', displayName: 'GDE PAPA' }, 
-        { src: 'music/8.mp3', displayName: 'YEAAH' }, 
-        { src: 'music/9.mp3', displayName: 'PUMPFAKE' }, 
+        { src: 'music/8.mp3', displayName: 'hell.. YEAH' }, 
+        { src: 'music/9.mp3', displayName: 'GO, JUST GO' }, 
         { src: 'music/10.mp3', displayName: 'Я ПОД ЭТО НА ХВХ ПЕНИЛ' } 
     ];
 
@@ -420,4 +416,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (yearEl) {
         yearEl.textContent = new Date().getFullYear();
     }
+
+    document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'F12') {
+            event.preventDefault();
+        }
+
+        if (event.ctrlKey && event.shiftKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) {
+            event.preventDefault();
+        }
+        
+        if (event.ctrlKey && event.key.toUpperCase() === 'U') {
+            event.preventDefault();
+        }
+    });
 });
