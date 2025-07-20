@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { src: 'music/6.mp3', displayName: 'ГЛАВНЫЙ ГЕРОЙ' }, 
         { src: 'music/7.mp3', displayName: 'GDE PAPA' }, 
         { src: 'music/8.mp3', displayName: 'hell.. YEAH' }, 
-        { src: 'music/9.mp3', displayName: 'GO, JUST GO' }, 
+        { src: 'music/9.mp3', displayName: 'PUMPFAKE' }, 
         { src: 'music/10.mp3', displayName: 'Я ПОД ЭТО НА ХВХ ПЕНИЛ' } 
     ];
 
